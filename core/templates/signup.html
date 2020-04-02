@@ -17,22 +17,35 @@
             <div class="box">
               <p class="title is-3 has-text-centered">FlaskWeet</p>
               <p class="subtitle is-5 has-text-centered">Cadastro</p>
-              <form action="">
+              {% if message %}
+              <p class="has-text-centered {{ class_name }}">{{ message }}</p>
+              {% endif %}
+              <form action="" method="post">
+                {{ form.csrf_token }}
                 <div class="field">
                   <label class="label">Nome</label>
                   <div class="control">
-                    <input class="input" type="text" placeholder="Gabriell Oliveira">
+                    {{ form.name(class_='input', placeholder='Gabriell Oliveira') }}
                   </div>
                 </div>
                 
                 <div class="field">
                   <label class="label">Username</label>
                   <div class="control has-icons-left">
-                    <input class="input {% if response_ajax_user %}is-success{% endif %}" type="text" placeholder="gabriell">
+                    {% if response_ajax_user %}
+                      {{ form.username(class_='input is-success', placeholder='gabriell', required="") }}
+                    {% else %}
+                      {{ form.username(class_='input', placeholder='gabriell', required="") }}
+                    {% endif %}
                     <span class="icon is-small is-left">
                       <i class="fas fa-user"></i>
                     </span>
                   </div>
+                  {% if form.errors.username %}
+                    {% for error in form.errors.username %}
+                      <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                  {% endif %}
                   {% if response_ajax_user %}
                   <p class="help is-success">This username is available</p>
                   {% endif %}
@@ -41,11 +54,20 @@
                 <div class="field">
                   <label class="label">Email</label>
                   <div class="control has-icons-left">
-                    <input class="input {% if response_ajax_email %}is-danger{% endif %}" type="email" placeholder="gabriell@oliveira.com">
+                    {% if response_ajax_user %}
+                      {{ form.email(class_='input is-success', type="email", placeholder='gabriell@oliveira.com', required="") }}
+                    {% else %}
+                      {{ form.email(class_='input', type="email", placeholder='gabriell@oliveira.com', required="") }}
+                    {% endif %}
                     <span class="icon is-small is-left">
                       <i class="fas fa-envelope"></i>
                     </span>
                   </div>
+                  {% if form.errors.email %}
+                    {% for error in form.errors.email %}
+                      <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                  {% endif %}
                   {% if response_ajax_email %}
                   <p class="help is-success">Esse email já foi cadastrado</p>
                   {% endif %}
@@ -54,11 +76,16 @@
                 <div class="field">
                   <label class="label">Senha</label>
                   <div class="control has-icons-left">
-                    <input class="input" type="password" placeholder="Sua senha">
+                    {{ form.password(class_='input', placeholder='Sua senha', required="") }}
                     <span class="icon is-small is-left">
                       <i class="fas fa-key"></i>
                     </span>
                   </div>
+                  {% if form.errors.password %}
+                    {% for error in form.erros.password %}
+                      <p class="help is-danger">{{ error }}</p>
+                    {% endfor %}
+                  {% endif %}
                 </div>
            
                 <div class="field is-grouped">

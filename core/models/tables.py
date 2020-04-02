@@ -1,5 +1,6 @@
 from datetime import datetime
 from core import db
+from .utils import encrypt
 
 
 class User(db.Model):
@@ -11,10 +12,11 @@ class User(db.Model):
     password = db.Column(db.String(), nullable=False)
     name = db.Column(db.String(), nullable=True)
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password, name=None):
+        self.name = name
         self.username = username
         self.email = email
-        self.password = password
+        self.password = encrypt(password)
 
     def __repr__(self):
         return f'<User: {self.username}>'
