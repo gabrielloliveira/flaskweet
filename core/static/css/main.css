@@ -1,3 +1,8 @@
+html.has-gradient{
+  background: rgb(79,131,241);
+  background: linear-gradient(143deg, rgba(79,131,241,1) 0%, rgba(95,5,218,1) 100%);
+}
+
 .is-main{
   max-width: 1000px;
 }
