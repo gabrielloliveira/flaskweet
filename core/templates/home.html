@@ -44,6 +44,9 @@
                 <div class="content">
                   {{ tweet.content }}
                   <br>
+                  <span class="icon">
+                    <i class="fas fa-clock"></i>
+                  </span>
                   <time datetime="{{ tweet.pub_date.strftime('%Y-%m-%d') }}">{{ tweet.pub_date.strftime('%H:%M - %d/%m/%Y') }}</time>
                 </div>
               </div>
@@ -71,6 +74,9 @@
               <div class="content">
                 Digite seu primeiro Tweet na caixa acima.
                 <br>
+                <span class="icon">
+                  <i class="fas fa-clock"></i>
+                </span>
                 <time datetime="">Agora</time>
               </div>
             </div>
