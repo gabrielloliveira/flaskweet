@@ -3,6 +3,14 @@ html.has-gradient{
   background: linear-gradient(143deg, rgba(79,131,241,1) 0%, rgba(95,5,218,1) 100%);
 }
 
+.navbar{
+  background-color: black;
+}
+
+.navbar a{
+  color: white;
+}
+
 .is-main{
   max-width: 1000px;
 }
