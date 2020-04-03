@@ -1,5 +1,4 @@
-from flask import render_template, redirect, url_for
-from flask import request
+from flask import render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, login_user, current_user, logout_user
 from core import app, db, login_manager
 from core.models.forms import LoginForm, UserCreationForm
@@ -89,3 +88,14 @@ def publish_tweet():
     db.session.add(tweet)
     db.session.commit()
     return redirect(url_for('home'))
+
+
+@app.route('/search/user/', methods=['POST'])
+@login_required
+def search_user():
+    name_or_username = request.form['value']
+    users = User.query.filter(User.name.contains(name_or_username)).all()
+    names = [x.name for x in users]
+    return jsonify(
+        users=names,
+    )

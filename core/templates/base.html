@@ -26,7 +26,7 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <form action="">
-            <input type="text" class="input" placeholder="Pesquisar por usuário">
+            <input type="text" class="input" placeholder="Pesquisar por usuário" id="search-user">
           </form>
         </div>
         <div class="navbar-item">
@@ -51,5 +51,21 @@
   </section>
 
   <script src="{{ url_for('static', filename='js/burger.js') }}"></script>
+  <script>
+    const input = document.getElementById('search-user')
+    input.addEventListener('keyup', () => {
+      let ajax = new XMLHttpRequest();
+      ajax.open("POST", "{{ url_for('search_user') }}", true)
+      ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+      ajax.onreadystatechange = () => {
+        if (ajax.readyState == 4 && ajax.status == 200) {  
+          let data = ajax.responseText
+          let json = JSON.parse(data)
+          console.log("recebi ", json)
+        }
+      }
+      ajax.send('value='+input.value)
+    })
+  </script>
 </body>
 </html>
