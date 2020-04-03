@@ -31,7 +31,7 @@
         </div>
         <div class="navbar-item">
           <div class="buttons">
-            <form action="">
+            <form action="{{ url_for('logout') }}" method="post">
               <input type="hidden" name="logout">
               <button class="button is-danger">
                 Sair

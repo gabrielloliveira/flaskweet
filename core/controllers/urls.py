@@ -1,19 +1,42 @@
-from flask import render_template
+from flask import render_template, redirect, url_for
 from flask import request
-from core import app, db
+from flask_login import login_required, login_user, current_user, logout_user
+from core import app, db, login_manager
 from core.models.forms import LoginForm, UserCreationForm
 from core.models.tables import User
+from core.models.auth import authenticate
 
 
-@app.route('/')
-@app.route('/login/')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     form = LoginForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        user = authenticate(form.username.data, form.password.data)
+        if user:
+            login_user(user)
+            return redirect(url_for('home'))
+
+        message = "Email ou senha inválidos."
+        class_name = "has-text-danger"
+        return render_template(
+            'login.html',
+            form=form,
+            message=message,
+            class_name=class_name
+        )
+
     return render_template('login.html', form=form)
 
 
-@app.route('/cadastro/', methods=['GET', 'POST'])
+@app.route('/signup/', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     form = UserCreationForm()
 
     if request.method == 'POST' and form.validate_on_submit():
@@ -45,6 +68,13 @@ def signup():
     return render_template('signup.html', form=form)
 
 
+@app.route('/logout/', methods=['POST'])
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
 @app.route('/home/')
+@login_required
 def home():
     return render_template('home.html')

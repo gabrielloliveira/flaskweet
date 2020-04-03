@@ -17,6 +17,9 @@
             <div class="box">
               <p class="title is-3 has-text-centered">FlaskWeet</p>
               <p class="subtitle is-5 has-text-centered">Login</p>
+              {% if message %}
+              <p class="{{ class_name }} has-text-centered">{{ message }}</p>
+              {% endif %}
               <form action="" method="post">
                 {{ form.csrf_token }}
                 

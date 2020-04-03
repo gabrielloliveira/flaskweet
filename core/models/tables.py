@@ -1,9 +1,24 @@
 from datetime import datetime
-from core import db
+from flask_login import UserMixin
+from core import db, login_manager
 from .utils import encrypt
 
 
-class User(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter_by(id=user_id).first()
+
+
+class User(UserMixin, db.Model):
+    """
+    Classe para representação do usuário no banco de dados.
+
+    Parâmetros:
+        username: nome de usuário.
+        email: email do usuário.
+        password: senha so usuário.
+        name (opcional): nome completo do usuário.
+    """
     __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -18,11 +33,33 @@ class User(db.Model):
         self.email = email
         self.password = encrypt(password)
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return f'{self.id}'
+
     def __repr__(self):
         return f'<User: {self.username}>'
 
 
 class Tweet(db.Model):
+    """
+    Classe para representação de um tweet no banco de dados.
+
+    Parâmetros:
+        content: conteúdo do tweet.
+        user_id: id do usuário que publicou o tweet.
+    """
     __tablename__ = "tweet"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -40,6 +77,9 @@ class Tweet(db.Model):
 
 
 class Follow(db.Model):
+    """
+    Classe para representação de um seguidor no banco de dados.
+    """
     __tablename__ = "follow"
 
     id = db.Column(db.Integer, primary_key=True)
