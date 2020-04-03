@@ -10,10 +10,10 @@
     <div class="columns">
       <div class="column create-tweet">
         <div class="card">
-          <form action="">
+          <form action="{{ url_for('publish_tweet') }}" method="post">
             <div class="card-content">
               <p class="title is-5">Tweet</p>
-              <textarea class="textarea" name="content" placeholder="Digite o que quiser"></textarea>
+              <textarea required class="textarea" name="content" placeholder="Digite o que quiser @{{ current_user.username }}"></textarea>
               <div class="tweet-div-button-submit has-text-right">
                 <button class="button is-link">Publicar</button>
               </div>
@@ -23,33 +23,62 @@
       </div>
     </div>
 
-    <div class="columns">
-      <div class="column">
-        <div class="card">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">John Smith</p>
-                <p class="subtitle is-6">@johnsmith</p>
+    {% if tweets %}
+      {% for tweet in tweets %}
+        <div class="columns">
+          <div class="column">
+            <div class="card">
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-left">
+                    <figure class="image is-48x48">
+                      <img class="is-rounded" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                    </figure>
+                  </div>
+                  <div class="media-content">
+                    <p class="title is-4">{{ tweet.user.name }}</p>
+                    <p class="subtitle is-6">@{{ tweet.user.username }}</p>
+                  </div>
+                </div>
+            
+                <div class="content">
+                  {{ tweet.content }}
+                  <br>
+                  <time datetime="{{ tweet.pub_date.strftime('%Y-%m-%d') }}">{{ tweet.pub_date.strftime('%H:%M - %d/%m/%Y') }}</time>
+                </div>
               </div>
             </div>
-        
-            <div class="content">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-              <a href="#">#css</a> <a href="#">#responsive</a>
-              <br>
-              <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="columns">
+        <div class="column">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img class="is-rounded" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">FlaskWeet</p>
+                  <p class="subtitle is-6">@flaskweet</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                Digite seu primeiro Tweet na caixa acima.
+                <br>
+                <time datetime="">Agora</time>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    {% endif %}
+
 
   </div>
   <div class="column is-4">

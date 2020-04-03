@@ -3,7 +3,7 @@ from flask import request
 from flask_login import login_required, login_user, current_user, logout_user
 from core import app, db, login_manager
 from core.models.forms import LoginForm, UserCreationForm
-from core.models.tables import User
+from core.models.tables import User, Tweet
 from core.models.auth import authenticate
 
 
@@ -77,4 +77,15 @@ def logout():
 @app.route('/home/')
 @login_required
 def home():
-    return render_template('home.html')
+    tweets = Tweet.query.filter_by(user_id=current_user.id).order_by(Tweet.pub_date.desc()).all()
+    return render_template('home.html', tweets=tweets)
+
+
+@app.route('/publish/', methods=['POST'])
+@login_required
+def publish_tweet():
+    content = request.form['content']
+    tweet = Tweet(content, current_user.id)
+    db.session.add(tweet)
+    db.session.commit()
+    return redirect(url_for('home'))
