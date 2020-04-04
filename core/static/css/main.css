@@ -18,3 +18,20 @@ html.has-gradient{
 .create-tweet .tweet-div-button-submit{
   margin-top: 1rem;
 }
+
+.result-users ul li.panel-block{
+  position: relative;
+}
+
+.result-users ul li.panel-block .media{
+  width: 100%;
+}
+
+.result-users ul li.panel-block .media-content{
+  max-width: 40%;
+}
+
+.result-users ul li.panel-block button.button{
+  position: absolute;
+  right: 0;
+}

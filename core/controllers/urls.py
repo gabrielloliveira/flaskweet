@@ -90,12 +90,9 @@ def publish_tweet():
     return redirect(url_for('home'))
 
 
-@app.route('/search/user/', methods=['POST'])
+@app.route('/search/user/', methods=['GET'])
 @login_required
 def search_user():
-    name_or_username = request.form['value']
-    users = User.query.filter(User.username.contains(name_or_username)).all()
-    names = [x.username for x in users]
-    return jsonify(
-        users=names,
-    )
+    username = request.args['username']
+    users = User.query.filter(User.username.contains(username)).all()
+    return render_template('search.html', users=users)

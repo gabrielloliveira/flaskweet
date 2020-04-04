@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Pesquisa{% endblock %}
+
+{% block content %}
+
+<div class="columns">
+  <div class="column">
+    <div class="box result-users">
+      {% if users %}
+        <h1 class="title">Resultado da busca</h1>
+        <ul>
+          {% for user in users %}
+          <li class="panel-block">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img class="is-rounded" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                </figure>
+              </div>
+              <div class="media-content">
+                <p>{{ user.name }}</p>
+                <p class="subtitle is-6">@{{ user.username }}</p>
+              </div>
+              <form action="" method="post">
+                <input type="hidden" name="username" value="{{ user.username }}">
+                <button class="button is-link">
+                  <span class="icon">
+                    <i class="fas fa-user-plus"></i>
+                  </span>
+                  <span>
+                    Seguir
+                  </span>
+                </button>
+              </form>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <h1 class="title">Não foi encontrado reusltado com o termo pesquisado.</h1>
+        <a href="{{ url_for('home') }}" class="button is-link">Voltar</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
