@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, login_user, current_user, logout_user
 from core import app, db, login_manager
 from core.models.forms import LoginForm, UserCreationForm
-from core.models.tables import User, Tweet
+from core.models.tables import User, Tweet, Follow
 from core.models.auth import authenticate
 
 
@@ -77,7 +77,8 @@ def logout():
 @login_required
 def home():
     tweets = Tweet.query.filter_by(user_id=current_user.id).order_by(Tweet.pub_date.desc()).all()
-    return render_template('home.html', tweets=tweets)
+    followers = Follow.query.filter_by(user_id=current_user.id).all()
+    return render_template('home.html', tweets=tweets, followers=followers)
 
 
 @app.route('/publish/', methods=['POST'])
