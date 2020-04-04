@@ -22,17 +22,28 @@
                 <p>{{ user.name }}</p>
                 <p class="subtitle is-6">@{{ user.username }}</p>
               </div>
-              <form action="" method="post">
-                <input type="hidden" name="username" value="{{ user.username }}">
-                <button class="button is-link">
+              {% if current_user == user %}
+                <button class="button is-link" disabled>
                   <span class="icon">
-                    <i class="fas fa-user-plus"></i>
+                    <i class="fas fa-user"></i>
                   </span>
                   <span>
-                    Seguir
+                    Você
                   </span>
                 </button>
-              </form>
+              {% else %}
+                <form action="" method="post">
+                  <input type="hidden" name="username" value="{{ user.username }}">
+                  <button class="button is-link">
+                    <span class="icon">
+                      <i class="fas fa-user-plus"></i>
+                    </span>
+                    <span>
+                      Seguir
+                    </span>
+                  </button>
+                </form>
+              {% endif %}
             </div>
           </li>
           {% endfor %}
