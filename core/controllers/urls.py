@@ -94,8 +94,8 @@ def publish_tweet():
 @login_required
 def search_user():
     name_or_username = request.form['value']
-    users = User.query.filter(User.name.contains(name_or_username)).all()
-    names = [x.name for x in users]
+    users = User.query.filter(User.username.contains(name_or_username)).all()
+    names = [x.username for x in users]
     return jsonify(
         users=names,
     )
