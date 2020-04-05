@@ -2,9 +2,10 @@
 
 Uma aplicação simples feita em flask para tweets.
 
+<p style="text-align:center">Tela de login</p>
+
 <figure>
   <img src="https://raw.githubusercontent.com/gabrielloliveira/flaskweet/master/img/login.png" style="display:block; margin: 0 auto">
-  <figcaption style="text-align: center">Tela de login</figcaption>
 </figure>
 
 ## Requerimento
@@ -43,17 +44,20 @@ Uma aplicação simples feita em flask para tweets.
 
 ## Imagens do projeto
 
+<p style="text-align:center">Tela de cadastro de usuário</p>
+
 <figure>
   <img src="https://raw.githubusercontent.com/gabrielloliveira/flaskweet/master/img/cadastro.png" style="display:block; margin: 0 auto">
-  <figcaption style="text-align: center">Tela de cadastro de usuário</figcaption>
 </figure>
+
+<p style="text-align:center">Tela home</p>
 
 <figure>
   <img src="https://raw.githubusercontent.com/gabrielloliveira/flaskweet/master/img/home.png" style="display:block; margin: 0 auto">
-  <figcaption style="text-align: center">Tela home</figcaption>
 </figure>
+
+<p style="text-align:center">Pesquisa de usuário</p>
 
 <figure>
   <img src="https://raw.githubusercontent.com/gabrielloliveira/flaskweet/master/img/busca.png" style="display:block; margin: 0 auto">
-  <figcaption style="text-align: center">Pesquisa de usuário</figcaption>
 </figure>
