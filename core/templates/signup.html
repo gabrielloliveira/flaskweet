@@ -32,11 +32,7 @@
                 <div class="field">
                   <label class="label">Username</label>
                   <div class="control has-icons-left">
-                    {% if response_ajax_user %}
-                      {{ form.username(class_='input is-success', placeholder='gabriell', required="") }}
-                    {% else %}
-                      {{ form.username(class_='input', placeholder='gabriell', required="") }}
-                    {% endif %}
+                    {{ form.username(class_='input', id="input-username", placeholder='gabriell', required="") }}
                     <span class="icon is-small is-left">
                       <i class="fas fa-user"></i>
                     </span>
@@ -46,19 +42,13 @@
                       <p class="help is-danger">{{ error }}</p>
                     {% endfor %}
                   {% endif %}
-                  {% if response_ajax_user %}
-                  <p class="help is-success">This username is available</p>
-                  {% endif %}
+                  <p class="help" id="help-username" style="display: none;"></p>
                 </div>
                 
                 <div class="field">
                   <label class="label">Email</label>
                   <div class="control has-icons-left">
-                    {% if response_ajax_user %}
-                      {{ form.email(class_='input is-success', type="email", placeholder='gabriell@oliveira.com', required="") }}
-                    {% else %}
-                      {{ form.email(class_='input', type="email", placeholder='gabriell@oliveira.com', required="") }}
-                    {% endif %}
+                    {{ form.email(class_='input', type="email", id="input-email", placeholder='gabriell@oliveira.com', required="") }}
                     <span class="icon is-small is-left">
                       <i class="fas fa-envelope"></i>
                     </span>
@@ -68,9 +58,7 @@
                       <p class="help is-danger">{{ error }}</p>
                     {% endfor %}
                   {% endif %}
-                  {% if response_ajax_email %}
-                  <p class="help is-success">Esse email já foi cadastrado</p>
-                  {% endif %}
+                  <p class="help" id="help-email" style="display: none;"></p>
                 </div>
       
                 <div class="field">
@@ -103,5 +91,62 @@
       </div>
     </div>
   </section>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const input_email = document.getElementById('input-email')
+      const p_email = document.getElementById('help-email')
+
+      const input_username = document.getElementById('input-username')
+      const p_username = document.getElementById('help-username')
+
+
+      input_email.addEventListener('input', () => {
+        let ajax = new XMLHttpRequest();
+        ajax.open("POST", "{{ url_for('verify_email') }}", true)
+        ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+        ajax.onreadystatechange = () => {
+          if (ajax.readyState == 4 && ajax.status == 200) {  
+            let data = ajax.responseText
+            let json = JSON.parse(data)
+            if(json.status){
+              p_email.classList.add("is-danger")
+              input_email.classList.add("is-danger")
+              p_email.setAttribute("style", "display: block")
+              p_email.innerText = "Esse email já foi cadastrado."
+            }else{
+              p_email.setAttribute("style", "display: none")
+              input_email.classList.remove("is-danger")
+            }
+          }
+        }
+        ajax.send('email='+input_email.value)
+      })
+      
+      input_username.addEventListener('input', () => {
+        let ajax = new XMLHttpRequest();
+        ajax.open("POST", "{{ url_for('verify_username') }}", true)
+        ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+        ajax.onreadystatechange = () => {
+          if (ajax.readyState == 4 && ajax.status == 200) {  
+            let data = ajax.responseText
+            let json = JSON.parse(data)
+            if(json.status){
+              p_username.classList.add("is-danger")
+              input_username.classList.add("is-danger")
+              p_username.setAttribute("style", "display: block")
+              p_username.innerText = "Esse nome de usuário já foi cadastrado."
+            }else{
+              p_username.setAttribute("style", "display: none")
+              input_username.classList.remove("is-danger")
+            }
+          }
+        }
+        ajax.send('username='+input_username.value)
+      })
+
+    })
+
+
+  </script>
 </body>
 </html>

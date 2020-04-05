@@ -114,6 +114,26 @@ def follow():
         db.session.add(f)
 
     db.session.commit()
-    return jsonify(
-        status=True
-    )
+    return jsonify(status=True)
+
+
+@app.route('/verify/email/', methods=['POST'])
+def verify_email():
+    email = request.form['email']
+    user = User.query.filter_by(email=email).first()
+    status = True
+    if user is None:
+        status = False
+
+    return jsonify(status=status)
+
+
+@app.route('/verify/username/', methods=['POST'])
+def verify_username():
+    username = request.form['username']
+    user = User.query.filter_by(username=username).first()
+    status = True
+    if user is None:
+        status = False
+
+    return jsonify(status=status)
