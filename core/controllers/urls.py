@@ -97,3 +97,22 @@ def search_user():
     username = request.args['username']
     users = User.query.filter(User.username.contains(username)).all()
     return render_template('search.html', users=users)
+
+
+@app.route('/follow/', methods=['POST'])
+@login_required
+def follow():
+    username = request.form['username']
+    user = User.query.filter_by(username=username).first()
+
+    if user.has_followed:
+        relation = Follow.query.filter_by(user_id=user.id).filter_by(follower_id=current_user.id).first()
+        db.session.delete(relation)
+    else:
+        f = Follow(user.id, current_user.id)
+        db.session.add(f)
+
+    db.session.commit()
+    return jsonify(
+        status=True
+    )

@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from core import db, login_manager
 from .utils import encrypt
 
@@ -48,6 +48,10 @@ class User(UserMixin, db.Model):
     def get_id(self):
         return f'{self.id}'
 
+    @property
+    def has_followed(self):
+        return Follow.query.filter_by(user_id=self.id).filter_by(follower_id=current_user.id).first() is not None
+
     def __repr__(self):
         return f'<User: {self.username}>'
 
@@ -87,3 +91,11 @@ class Follow(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', foreign_keys=user_id)
     follower = db.relationship('User', foreign_keys=follower_id)
+
+    def __init__(self, user_id, follower_id):
+        self.user_id = user_id
+        self.follower_id = follower_id
+
+    @property
+    def has_followed(self):
+        return Follow.query.filter_by(user_id=self.user_id).filter_by(follower_id=current_user.id).first() is not None

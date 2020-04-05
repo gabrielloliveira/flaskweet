@@ -32,9 +32,17 @@
                   </span>
                 </button>
               {% else %}
-                <form action="" method="post">
-                  <input type="hidden" name="username" value="{{ user.username }}">
-                  <button class="button is-link">
+                {% if user.has_followed %}
+                  <button class="button is-link follow is-light" data-user="{{ user.username }}">
+                    <span class="icon">
+                      <i class="fas fa-user-friends"></i>
+                    </span>
+                    <span>
+                      Seguindo
+                    </span>
+                  </button>
+                {% else %}
+                  <button class="button is-link follow" data-user="{{ user.username }}">
                     <span class="icon">
                       <i class="fas fa-user-plus"></i>
                     </span>
@@ -42,7 +50,7 @@
                       Seguir
                     </span>
                   </button>
-                </form>
+                {% endif %}
               {% endif %}
             </div>
           </li>
@@ -56,4 +64,26 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block script %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.getElementsByClassName('follow')
+    for (let i = 0; i < buttons.length; i++) {  
+      buttons[i].addEventListener('click', () => {
+        const user = buttons[i].getAttribute('data-user')
+        let ajax = new XMLHttpRequest();
+        ajax.open("POST", "{{ url_for('follow') }}", true)
+        ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+        ajax.onreadystatechange = () => {
+          if (ajax.readyState == 4 && ajax.status == 200) {  
+            location.reload()
+          }
+        }
+        ajax.send('username='+user)
+      })
+    }
+  })
+</script>
 {% endblock %}
