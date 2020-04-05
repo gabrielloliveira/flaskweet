@@ -54,9 +54,9 @@ class User(UserMixin, db.Model):
 
     def user_followers_id(self):
         users = []
-        user_followers = Follow.query.filter_by(user_id=current_user.id).all()
+        user_followers = Follow.query.filter_by(follower_id=current_user.id).all()
         for user in user_followers:
-            users.append(user.follower_id)
+            users.append(user.user_id)
 
         users.append(current_user.id)
         return users
