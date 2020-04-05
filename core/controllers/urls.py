@@ -76,7 +76,8 @@ def logout():
 @app.route('/home/')
 @login_required
 def home():
-    tweets = Tweet.query.filter_by(user_id=current_user.id).order_by(Tweet.pub_date.desc()).all()
+    users = current_user.user_followers_id()
+    tweets = Tweet.query.filter(Tweet.user_id.in_(users)).order_by(Tweet.pub_date.desc()).all()
     followers = Follow.query.filter_by(user_id=current_user.id).all()
     return render_template('home.html', tweets=tweets, followers=followers)
 

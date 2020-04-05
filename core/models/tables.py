@@ -52,6 +52,15 @@ class User(UserMixin, db.Model):
     def has_followed(self):
         return Follow.query.filter_by(user_id=self.id).filter_by(follower_id=current_user.id).first() is not None
 
+    def user_followers_id(self):
+        users = []
+        user_followers = Follow.query.filter_by(user_id=current_user.id).all()
+        for user in user_followers:
+            users.append(user.follower_id)
+
+        users.append(current_user.id)
+        return users
+
     def __repr__(self):
         return f'<User: {self.username}>'
 
